@@ -11,10 +11,3 @@ def get_hostnames_from_xml(f):
         hostnames.add(node.get("hostname"))
 
     return list(hostnames)
-
-
-
-f = 'manifest.xml'
-
-hostnames = get_hostnames_from_xml(f)
-print(hostnames)
