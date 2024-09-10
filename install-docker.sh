@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# specify architecture type as amd64 or arm64
+ARCH=$(dpkg --print-architecture)
+
 # Update package index
 sudo apt update
 
@@ -14,7 +17,7 @@ sudo apt install -y \
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 # Add Docker repository
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Update package index again
 sudo apt update
@@ -28,5 +31,3 @@ sudo usermod -aG docker $USER
 # Enable and start Docker service
 sudo systemctl enable docker
 sudo systemctl start docker
-
-echo "Docker installation completed. You need to log out and log back in for group changes to take effect."
