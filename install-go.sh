@@ -1,24 +1,25 @@
 #!/bin/bash -i
 
-# Specify the Go version to install
-GO_VERSION="1.23.1"
 
-# specify architecture type as amd64 or arm64
-ARCH=$(dpkg --print-architecture)
+if [ -x "$(command -v go)" ]; then
+    echo "Go has already been installed"
+else
+    # Specify the Go version to install
+    GO_VERSION="1.23.1"
 
-# Download and install Go
-curl -LO "https://golang.org/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz"
-sudo tar -C /usr/local -xzf "go${GO_VERSION}.linux-${ARCH}.tar.gz"
+    # specify architecture type as amd64 or arm64
+    ARCH=$(dpkg --print-architecture)
 
-# Add Go binary directory to PATH
-echo "export PATH=\$PATH:/usr/local/go/bin" >> ~/.bashrc
+    # Download and install Go
+    curl -LO "https://golang.org/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz"
+    sudo tar -C /usr/local -xzf "go${GO_VERSION}.linux-${ARCH}.tar.gz"
 
-tail -n +10 ~/.bashrc | bash
+    # Add Go binary directory to PATH
+    export PATH=$PATH:/usr/local/go/bin
+    sudo sh -c  "echo 'export PATH=\$PATH:/usr/local/go/bin' >> /etc/profile"
 
-# Verify Go installation
-go version
+    # Verify Go installation
+    go version
 
-# Clean up downloaded archive
-rm "go${GO_VERSION}.linux-${ARCH}.tar.gz"
-
-echo "Go ${GO_VERSION} installation completed."
+    echo "Go ${GO_VERSION} installation completed."
+fi
