@@ -1,6 +1,7 @@
 #!/bin/bash
 
 NEW_VERSION="registry.k8s.io/pause:3.9"
+CONFIG_FILE="/etc/containerd/config.toml"
 # Function to update or add the sandbox image configuration
 update_sandbox_image() {
     if grep -q '\[plugins."io.containerd.grpc.v1.cri"\]' "$CONFIG_FILE"; then
