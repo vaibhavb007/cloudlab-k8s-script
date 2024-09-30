@@ -17,3 +17,5 @@ sudo systemctl restart containerd
 
 sudo sed -i '/^[^#]*swap/s/^/# /' /etc/fstab
 sudo swapoff -a
+
+iptables -A INPUT -p tcp --match multiport --dports 6443,2379,2380,10250,10259,10257,10256 -j ACCEPT
