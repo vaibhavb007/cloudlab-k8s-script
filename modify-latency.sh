@@ -6,4 +6,4 @@ function RemoteExec() {
 }
 
 # replace latency passed as a commandline argument
-RemoteExec $1 "sudo tc qdisc add dev eno1 root netem delay $2ms"
+RemoteExec $1 "sudo tc qdisc replace dev eno1 root netem delay $2ms"
