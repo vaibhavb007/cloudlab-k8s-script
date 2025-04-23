@@ -5,7 +5,7 @@ if [ -x "$(command -v go)" ]; then
     echo "Go has already been installed"
 else
     # Specify the Go version to install
-    GO_VERSION="1.23.1"
+    GO_VERSION="1.24.2"
 
     # specify architecture type as amd64 or arm64
     ARCH=$(dpkg --print-architecture)
