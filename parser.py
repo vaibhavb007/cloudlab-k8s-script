@@ -5,12 +5,16 @@ def get_hostnames_from_xml(f):
 
     tree = ET.parse(f)
     root = tree.getroot()
-    hostnames = set()
+    hostnames = []
 
     for node in root.findall(".//{http://www.geni.net/resources/rspec/3}login"):
-        hostnames.add(node.get("hostname"))
+        hostnames.append(node.get("hostname"))
+        
+    # remove duplicates from the list without changing the order
+    hostnames = list(dict.fromkeys(hostnames))
+    
 
-    return list(hostnames)
+    return hostnames
 
 def main():
     hosts = get_hostnames_from_xml('manifest.xml')

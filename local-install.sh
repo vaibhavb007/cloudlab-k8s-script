@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo apt install -y screen
+
 bash ./install-go.sh
 bash ./install-docker.sh
 bash ./miniconda-install.sh
