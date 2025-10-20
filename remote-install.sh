@@ -20,6 +20,7 @@ function setupNode() {
 }
 
 python3 parser.py -u "$CLOUDLAB_USER" -m "$MANIFEST_FILE"
+python3 generate_ip_mapping.py -m "$MANIFEST_FILE"
 
 for entry in $(cat hosts.txt); do
     entry=${entry%$'\r'}
