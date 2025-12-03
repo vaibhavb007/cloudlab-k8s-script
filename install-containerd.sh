@@ -12,10 +12,10 @@ update_sandbox_image() {
         # Section exists, update the sandbox_image line
         if grep -Eq '^[[:space:]]*sandbox_image[[:space:]]*=' "$CONFIG_FILE"; then
             # sandbox_image line exists, update it
-            sudo sed -Ei 's|^[[:space:]]*sandbox_image[[:space:]]*=.*|  sandbox_image = "'"$NEW_VERSION"'"|' "$CONFIG_FILE"
+            sudo sed -Ei 's|^[[:space:]]*sandbox_image[[:space:]]*=.*|    sandbox_image = "'"$NEW_VERSION"'"|' "$CONFIG_FILE"
         else
             # sandbox_image line doesn't exist, add it
-            sudo sed -Ei "/$CRI_SECTION_REGEX/a\\  sandbox_image = \"$NEW_VERSION\"" "$CONFIG_FILE"
+            sudo sed -Ei "/$CRI_SECTION_REGEX/a\\    sandbox_image = \"$NEW_VERSION\"" "$CONFIG_FILE"
         fi
     else
         # Section doesn't exist, add it with the sandbox_image line
