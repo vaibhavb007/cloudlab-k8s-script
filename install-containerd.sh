@@ -4,14 +4,18 @@ NEW_VERSION="registry.k8s.io/pause:3.9"
 CONFIG_FILE="/etc/containerd/config.toml"
 # Function to update or add the sandbox image configuration
 update_sandbox_image() {
-    if grep -q '\[plugins."io.containerd.grpc.v1.cri"\]' "$CONFIG_FILE"; then
+    # Match CRI plugin section regardless of single or double quotes to avoid duplicate blocks.
+    # Allow leading whitespace so we match the existing indented block and avoid appending a duplicate.
+    CRI_SECTION_REGEX="^[[:space:]]*\\[plugins\\.(['\"]?)io.containerd.grpc.v1.cri\\1\\]$"
+
+    if grep -Eq "$CRI_SECTION_REGEX" "$CONFIG_FILE"; then
         # Section exists, update the sandbox_image line
-        if grep -q 'sandbox_image = ' "$CONFIG_FILE"; then
+        if grep -Eq '^[[:space:]]*sandbox_image[[:space:]]*=' "$CONFIG_FILE"; then
             # sandbox_image line exists, update it
-            sudo sed -i '/sandbox_image = /c\  sandbox_image = "'"$NEW_VERSION"'"' "$CONFIG_FILE"
+            sudo sed -Ei 's|^[[:space:]]*sandbox_image[[:space:]]*=.*|  sandbox_image = "'"$NEW_VERSION"'"|' "$CONFIG_FILE"
         else
             # sandbox_image line doesn't exist, add it
-            sudo sed -i '/\[plugins."io.containerd.grpc.v1.cri"\]/a\  sandbox_image = "'"$NEW_VERSION"'"' "$CONFIG_FILE"
+            sudo sed -Ei "/$CRI_SECTION_REGEX/a\\  sandbox_image = \"$NEW_VERSION\"" "$CONFIG_FILE"
         fi
     else
         # Section doesn't exist, add it with the sandbox_image line
