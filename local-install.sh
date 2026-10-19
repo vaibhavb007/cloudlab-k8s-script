@@ -8,6 +8,7 @@ bash ./miniconda-install.sh
 bash ./setup-prompt.sh
 bash ./install-containerd.sh
 bash ./install-k8s.sh
+bash ./install-claude-code.sh
 
 sudo apt install -y screen htop
 
