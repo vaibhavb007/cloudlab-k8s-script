@@ -4,3 +4,4 @@ __pycache__/*
 hosts.txt
 manifest.xml
 ip_mapping.json
+interface_mapping.json

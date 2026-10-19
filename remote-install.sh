@@ -21,6 +21,7 @@ function setupNode() {
 
 python3 parser.py -u "$CLOUDLAB_USER" -m "$MANIFEST_FILE"
 python3 generate_ip_mapping.py -m "$MANIFEST_FILE"
+python3 generate_interface_mapping.py -m "$MANIFEST_FILE"
 
 for entry in $(cat hosts.txt); do
     entry=${entry%$'\r'}
@@ -35,6 +36,8 @@ for entry in $(cat hosts.txt); do
         scp -o StrictHostKeyChecking=no -P 22 -r ~/.ssh "$ssh_target:~/"
     fi
     RemoteExec "$ssh_target" 'eval "$(ssh-agent -s)" && if ls ~/.ssh/id_* >/dev/null 2>&1; then for key in ~/.ssh/id_*; do if [ -f "$key" ] && [ "${key##*.}" != "pub" ]; then ssh-add "$key"; fi; done; fi'
+
+    scp -o StrictHostKeyChecking=no -P 22 ip_mapping.json interface_mapping.json "$ssh_target:~/"
 
     setupNode "$ssh_target"
 done
